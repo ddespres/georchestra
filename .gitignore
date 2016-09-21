@@ -6,7 +6,6 @@
 */jsbuild/distribute-*.tar.gz
 */jsbuild/setuptools-*.egg
 */src/main/webapp/WEB-INF/jsp/header.jsp
-PostTreatment.groovy
 **/.project
 **/.classpath
 **/.settings
