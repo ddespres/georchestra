@@ -20,7 +20,7 @@ docker-build-gn3: docker-pull-jetty-jre8
 	cd web; \
 	../../mvn -P docker -DskipTests package docker:build
 
-docker-build-geoserver: docker-pull-jetty-jre7
+docker-build-geoserver: docker-pull-jetty-jre8
 	cd geoserver/geoserver-submodule/src; \
 	rm -rf ../data/citewfs-1.1/workspaces/sf/sf/E*; \
 	LANG=C ../../../mvn clean install -DskipTests; \
