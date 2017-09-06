@@ -209,6 +209,7 @@ OpenLayers.Lang.fr = OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     "About this layer": "A propos de cette couche",
     "Set as overlay": "Passer en calque",
     "Set as baselayer": "Passer en couche de fond",
+    "Tiled mode" : "Mode tuilé",
     "Confirm NAME layer deletion ?":
         "Voulez-vous réellement supprimer la couche ${NAME} ?",
     "1:MAXSCALE to 1:MINSCALE": "1:${MAXSCALE} à 1:${MINSCALE}",
@@ -343,7 +344,7 @@ OpenLayers.Lang.fr = OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     /* GEOR_resultspanel.js strings */
     "Symbology": "Symbologie",
     "Edit this panel's features symbology": "Editer la symbologie de la sélection",
-    "Reset": "RàZ",
+    "Reset": "Réinitialiser",
     "Export is not possible: features have no geometry": "Export impossible : absence de géométries",
     "resultspanel.maxfeature.reached":
         " <span ext:qtip=\"Utilisez un navigateur plus performant " +

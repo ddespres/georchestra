@@ -2,7 +2,7 @@
 
 ## Database
 
-An SQL migration script is provided in the [migrations/16.12](migrations/16.12) folder. It creates two new schemas, and several tables in the `extractorapp` schema.
+An SQL migration script is provided in the [migrations/16.12](.) folder. It creates two new schemas, and several tables in the `extractorapp` schema.
 It is a required addition before the `extractorapp` and `atlas` modules are started.
 
 The LDAPadmin webapp should also create these new tables automatically during the first startup:
@@ -39,7 +39,7 @@ Here's the [full LDAP diff](https://gist.github.com/fvanderbiest/7c8ae5656e29325
 ## Configurations
 
 **The geOrchestra datadir is now mandatory**. It is indeed possible to fully configure a standard geOrchestra instance without having to build it.  
-Please read the notes from the [georchestra/datadir](https://github.com/georchestra/datadir/blob/master/README.md) repository to upgrade.
+Please read the notes from the [georchestra/datadir](https://github.com/georchestra/datadir/blob/master/README.md) repository before you upgrade. To proceed, we recommend (first a backup, then ...) the use of the `meld` tool to compare your existing datadir and a fresh copy of the datadir (on branch 16.12). 
 
 For the mapfishapp viewer, we restored the ability to choose which context is shown by default through the `GEOR.custom.DEFAULT_WMC` config option.
 Read [#1534](https://github.com/georchestra/georchestra/pull/1354) for more.
@@ -60,3 +60,5 @@ If you had JSP files customised in your own profile, you should synchronise them
 
 `ROLE_ANONYMOUS` does not exist anymore.  
 Applications should not use it. Instead, they should rely on the `sec-username` & `sec-roles` values.
+
+The security-proxy-generated `sec-org` header now maps to the user's Org `cn`, rather than the inetOrgPerson's `o` field. In addition, the `sec-orgname` header is now added to proxied requests, which maps to the user's organism title (ie the `o` field from the Org's groupOfMembers instance). This means that applications which were relying on the `sec-org` header should now use `sec-orgname` instead.

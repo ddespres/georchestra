@@ -34,6 +34,9 @@ docker-build-geoserver-geofence: docker-pull-jetty-jre7
 	cd ../../webapp; \
 	../../mvn clean install docker:build -Pdocker,geofence -DskipTests
 
+docker-build-ldapadmin: docker-pull-jetty-jre8
+	./mvn clean package docker:build -Pdocker -DskipTests --pl ldapadmin
+
 docker-build-georchestra: docker-pull-jetty-jre8 docker-build-database docker-build-ldap docker-build-geoserver docker-build-gn3
 	./mvn clean package docker:build -Pdocker -DskipTests --pl extractorapp,cas-server-webapp,security-proxy,mapfishapp,header,ldapadmin,analytics,catalogapp,downloadform,geowebcache-webapp,atlas
 
@@ -55,18 +58,18 @@ docker-clean-images:
 docker-clean-all:
 	docker-compose down --volumes --rmi 'all' --remove-orphans
 
-docker-build: docker-build-dev docker-build-gn3 docker-build-geoserver docker-build-georchestra
+docker-build: build-deps docker-build-dev docker-build-gn3 docker-build-geoserver docker-build-georchestra
 
 
 # WAR related targets
 
-war-build-geoserver:
+war-build-geoserver: build-deps
 	cd geoserver/geoserver-submodule/src/; \
 	../../../mvn clean install -Pcontrol-flow,css,csw,gdal,inspire,pyramid,wps -DskipTests; \
 	cd ../../..; \
 	./mvn clean install -pl geoserver/webapp
 
-war-build-geoserver-geofence:
+war-build-geoserver-geofence: build-deps
 	cd geoserver/geoserver-submodule/src/; \
 	../../../mvn clean install -Pcontrol-flow,css,csw,gdal,inspire,pyramid,wps,geofence-server -DskipTests; \
 	cd ../../..; \
@@ -89,14 +92,16 @@ deb-build-geoserver-geofence: war-build-geoserver-geofence
 	cd geoserver; \
 	../mvn clean package deb:package -PdebianPackage --pl webapp
 
-deb-build-deps:
+deb-build-georchestra: war-build-georchestra build-deps deb-build-geoserver
+	./mvn package deb:package -pl atlas,catalogapp,cas-server-webapp,downloadform,security-proxy,header,mapfishapp,extractorapp,analytics,geoserver/webapp,ldapadmin,geonetwork/web,geowebcache-webapp -PdebianPackage -DskipTests
+
+# Base geOrchestra config and common modules
+build-deps:
 	./mvn -Dmaven.test.failure.ignore clean install --non-recursive
 	./mvn clean install -pl config -Dmaven.javadoc.failOnError=false
 	./mvn clean install -pl commons,epsg-extension,ogc-server-statistics -Dmaven.javadoc.failOnError=false
-
-deb-build-georchestra: war-build-georchestra deb-build-deps deb-build-geoserver
-	./mvn package deb:package -pl atlas,catalogapp,cas-server-webapp,downloadform,security-proxy,header,mapfishapp,extractorapp,analytics,geoserver/webapp,ldapadmin,geonetwork/web,geowebcache-webapp -PdebianPackage -DskipTests
-
+	cd config/; \
+	../mvn -Dserver=template install
 
 # all
 all: war-build-georchestra deb-build-georchestra docker-build

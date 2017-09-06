@@ -13,7 +13,7 @@ RUN ln -s /usr/share/java/gdal.jar /var/lib/jetty/lib/ext/
 ADD . /
 
 RUN mkdir /mnt/mapfishapp_uploads && \
-    chown jetty:jetty /mnt/mapfishapp_uploads
+    chown jetty:jetty /etc/georchestra /mnt/mapfishapp_uploads
 
 VOLUME [ "/mnt/mapfishapp_uploads", "/tmp", "/run/jetty" ]
 
@@ -21,6 +21,7 @@ CMD ["sh", "-c", "exec java \
 -Djava.io.tmpdir=/tmp/jetty \
 -Dgeorchestra.datadir=/etc/georchestra \
 -Dmapfish-print-config=/etc/georchestra/mapfishapp/print/config.yaml \
+-Dorg.geotools.referencing.forceXY=true \
 -Xms$XMS -Xmx$XMX \
 -XX:-UsePerfData \
 ${JAVA_OPTIONS} \

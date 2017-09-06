@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.georchestra</groupId>
     <artifactId>root</artifactId>
-    <version>16.12-SNAPSHOT</version>
+    <version>17.06-SNAPSHOT</version>
   </parent>
   <name>catalogapp</name>
   <artifactId>catalogapp</artifactId>
@@ -183,6 +183,20 @@
         <configuration>
           <source>${java-version}</source>
           <target>${java-version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>jsbuild</directory>
+              <includes>
+                <include>env/**</include>
+              </includes>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
     </plugins>
