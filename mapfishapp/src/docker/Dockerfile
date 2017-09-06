@@ -12,12 +12,16 @@ RUN apt-get update && \
 
 RUN ln -s /usr/share/java/gdal.jar /var/lib/jetty/lib/ext/
 
+RUN mkdir /var/local/uploads && \
+    chown jetty:jetty /etc/georchestra /var/local/uploads
+
 VOLUME [ "/var/local/uploads", "/tmp", "/run/jetty" ]
 
 CMD ["sh", "-c", "exec java \
 -Djava.io.tmpdir=/tmp/jetty \
 -Dgeorchestra.datadir=/etc/georchestra \
 -Dmapfish-print-config=/etc/georchestra/mapfishapp/print/config.yaml \
+-Dorg.geotools.referencing.forceXY=true \
 -Xms$XMS -Xmx$XMX \
 -XX:-UsePerfData \
 ${JAVA_OPTIONS} \
